@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Netflix's Data Platform</title>
+
+        <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/reveal.css">
+        <link rel="stylesheet" href="../../css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="../../lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? '../../css/print/pdf.css' : '../../css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+            .tree{
+                margin-top: 20px;
+                ul{
+                    list-style: none !important;
+                    list-style-type: none !important;
+                    padding-left: 5px;
+                    li {
+                        padding-left: 16px;
+                        position: relative;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        &:before{
+                            content: '';
+                            height: 1px;
+                            width: 10px;
+                            background-color: #FFF;
+                            position: absolute;
+                            top: 10px;
+                            left: 0;
+                            margin: auto;
+                        }
+                        &:after{
+                            content:'';
+                            width: 1px;
+                            height: 100%;
+                            background-color: #FFF;
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                        }
+                        &:last-child{
+                            &:after{
+                                height: 10px;
+                            }
+                        }
+                    }
+                    a{
+                        cursor: pointer;
+                        &:hover{
+                            color:#333;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+            .tree  ul {
+                list-style-type: none !important;
+            }
+            .red {
+                color:#E50914
+            }
+            #logo {
+                position:absolute;
+                bottom:0px;
+                width: 100px;
+            }
+            .sidebar {
+                border-left:3px solid #E50914 !important;
+                padding-left: 20px !important;
+                font-weight: 100 !important;
+                display: block !important;
+            }
+            .right-sidebar {
+                border-right:3px solid #E50914 !important;
+                padding-right: 20px !important;
+                font-weight: 100 !important;
+                display: block !important;
+                position: absolute;
+                right: 0%;
+                top: -200px;
+
+            }
+            .align-left {
+                text-align: left;
+            }
+            .float-right {
+                float: right;
+            }
+            .float-left {
+                float: left;
+            }
+            #containers {
+                position: absolute;
+            }
+            .split {
+                margin:auto;
+                vertical-align: middle;
+                display: table-cell;
+                height: 100%;
+            }
+            .split > span {
+                width: 50%
+            }
+
+            figcaption, figcaption>a {
+                font-size: 65% !important;
+                background-color: #ccc;
+                color: #000 !important;
+            }
+
+        </style>
+    </head>
+    <body>
+        <img src="../../images/netflix.png" id='logo'>
+        <div class="reveal">
+            <div class="slides">
+                <section style="border-left:1px solid #E50914;">
+                    <section class="align-left">
+                        <h2 class="float-left"><span class="sidebar">Netflix's<br/>Data Platform</span>
+                        </h2>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Core<br/>Concepts</span></h2>
+                    </section>
+                    <section>
+                        <div class="split"><span class="float-left">
+                                <ul>
+                                    <li>Prefer self-service.</li>
+                                    <li>Pave a path and point to it.</li>
+                                    <li>Don't be a <a href="https://en.wikipedia.org/wiki/Gatekeeper">gatekeeper</a>.</li>
+                                    <li><a href="http://99percentinvisible.org/article/least-resistance-desire-paths-can-lead-better-design/">Pave</a> <a href="https://en.wikipedia.org/wiki/Desire_path">desire paths</a>.</li>
+                                </ul>
+                        </span>
+                        <span class="float-right">
+                            <figure>
+                                <img src="images/desirelines.jpg" class="plain">
+                                <figcaption><a href="https://www.flickr.com/photos/alanstanton/7094286453">Tottenham Green - desire line</a> - <a href="https://www.flickr.com/photos/alanstanton/">Alan Stanton</a> - <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY 2.0</a></figcaption>
+                            </figure>
+                        </span>
+                    </section>
+                    <section>
+                        Provide the best tools for the job.
+                    </section>
+                    <section>
+                        Separate compute and storage. (S3 is our data warehouse)
+                    </section>
+                    <section>
+                        Build and design cloud native, but adapt other tech as necessary.
+                    </section>
+                    <section>
+                        Tools should have a rest interface and a web interface as necessary.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Our<br/>Scale</span></h2>
+                    </section>
+                    <section>
+                        We ingest 500+ billion events per day.
+                    </section>
+                    <section>
+                        Our S3 data warehouse is ~40PB.
+                    </section>
+                    <section>
+                        We have ~160K datasets in our production data of which ~300 make up our core data model.
+                    </section>
+                    <section>
+                        <ul>
+                            <li>SLA cluster 2-3K nodes</li>
+                            <li>Adhoc cluster 2-3K nodes</li>
+                            <li>Various other clusters from 10-500 nodes</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">S3 data<br/>warehouse</span></h2>
+                    </section>
+                    <section>
+                        The S3 data warehouse consists of approximately 10 S3 buckets, our metadata service, and a set of tools to interact with the data warehouse.
+                    </section>
+                    <section>
+                        Fundamentally the data platform exists to make working with this data easy.
+                    </section>
+                    <section>
+                        We initially stored everything as text files to make accessing data easy without needing big data systems.
+                    </section>
+                    <section>
+                        Increasingly we use <a href="https://parquet.apache.org/">parquet</a> to encode tables.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Big Data<br/>Tools</span></h2>
+                    </section>
+                    <section>
+                        We have 2 main ETL languages<br/><br/>
+                        <ul>
+                            <li>Pig</li>
+                            <li>Spark</li>
+                        </ul>
+                    </section>
+                    <section>
+                        For SQL Access we provide<br/><br/>
+                        <ul>
+                            <li>Presto</li>
+                            <li>Hive</li>
+                            <li>SparkSQL</li>
+                        </ul>
+                    </section>
+                    <section>
+                        We currently don't support streaming, but we do have Spark streaming jobs running and externally to the platform Flink is available as well as internal tool called Mantis.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Core<br/>Services</span></h2>
+                    </section>
+                    <section>
+                        The core services are the fundamental pieces that make up our platform.  While other systems will come and go, these services (or the idea) will always be part of the platform.
+                    </section>
+                    <section>
+                        <h3>Metadata Service</h3>
+                        The metadata service allows us to federate data backends and make them available for either programmatic or business use cases.  We haven't official open sourced this project, but it is available as <a href="https://github.com/Netflix/metacat">Metacat</a>.
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#tables/prodhive/dse/account_day_d/schema"><img src="images/metacat_schema.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#tables/prodhive/dse/account_day_d/detail"><img src="images/metacat_detail.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="http://go/metacatweb"><img src="images/metacatweb.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        Upcoming work<br/><br/>
+                        <ul>
+                            <li>Kafka Topics</li>
+                            <li>Cassandra</li>
+                            <li>Elastic Search</li>
+                            <li>Druid</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Execution Service</h3>
+                        The execution service gives a rest interface allowing us to build lightweight clients that don't have to worry about configuration.  Our current open source implementation of this idea is <a href="https://github.com/Netflix/genie">Genie</a>.
+                    </section>
+                    <section>
+                        <a href="https://genie.prod.netflix.net/jobs"><img src="images/genie_jobs.png" class="plain"></a>
+                    </section>
+                    <section>
+                        <img src="images/genie_job_detail.png" class="plain" style="width:80%">
+                    </section>
+                    <section>
+                        <a href="https://genie.prod.netflix.net/clusters?src=btn&tag=bdp_type%3Abdas"><img src="images/genie_clusters.png" class="plain"></a>
+                    </section>
+                    <section>
+                        <a href="https://genie.prod.netflix.net/commands"><img src="images/genie_commands.png" class="plain"></a>
+                    </section>
+                    <section>
+                        <h3>Coordination Service</h3>
+                        While there is some merit to the belief that a scheduler is key to the data platform, our belief is the key building block we need is a way to coordinate between work.  This is fundamental to workflows, notifications.  We are rebuilding this, called Microbots.
+                    </section>
+                    <section>
+                        <a href="http://microbots.dyntest.netflix.net:7001/"><img src="images/microbots.png" class="plain"></a>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2 class="align-left"><span class="sidebar">Non-core<br/>Services</span></h2>
+                    </section>
+                    <section>
+                        <h3>Data Quality</h3>
+                        We have built a tool called Quinto to measure data and perform evaluations of the quality of the data.  Quinto utilizes Metacat to get metrics or runs metric queries using Genie.
+                    </section>
+                    <section>
+                        <a href="https://quinto.dynprod.netflix.net:7002/"><img src="images/quinto.png" class="plain"></a>
+                    </section>
+                    <section>
+                        <h3>Data Lineage</h3>
+                        We store our lineage information in a tool called Charlotte.  This is mainly metadata about movement of data.
+                    </section>
+                    <section>
+                        We currently collect data in two ways<br/>
+                        <ol>
+                            <li>We prefer tools to publish it (Spark, Presto, Pig, Kragle)</li>
+                            <li>Parse SQL when needed</li>
+                        <ol>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#tables/prodhive/dse/account_day_d/dependencies"><img src="images/charlotte.png" class="plain"></a>
+                    </section>
+                    <section>
+                        <h3>Platform Insight</h3>
+                        Platform insight is the collection of tools that we use to provide context and visibility to what is happening on the platform.  We are focusing initially on jobs run on the clusters as well as tables.  Job insight is known as Saber and table insight is a combination of Metacat/Charlotte/Quinto/<a href='http://go/datadoc'>Data Doctor</a>.
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#insights/jobs"><img src="images/insight.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#insights/jobs/LOOPER%3A%20RESTATE_SCL/summary"><img src="images/insight_job.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <h3>Scheduler</h3>
+                        Currently we use an enterprise scheduler called <a href="https://automic.com/">Automic</a> which we commonly refer to as <a href="http://go/uc4web">UC4</a>.
+                    </section>
+                    <section>
+                        <a href="https://go/uc4web"><img src="images/uc4.png" class="plain" style="width:60%"></a>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2 class="align-left"><span class="sidebar">Additional<br/>Tools</span></h2>
+                    </section>
+                    <section>
+                        <h3>Notebooks</h3>
+                        We are investing heavily in Notebooks.  We are actively working on Jupyter/Nteract and support Zeppelin and RStudio.
+                    </section>
+                    <section>
+                        <h3>Development Environments</h3>
+                        We provide docker containers which allow portable, repeatable environments for running ETL and developing.  These form the basis of our Notebooks, the backend for our scheduler, as well as our new query gateway
+                    </section>
+                    <section>
+                        <h3>Redshift</h3>
+                        We put data into Redshift as needed for downstream processing.  Our current strategy is to copy tables directly from our data warehouse, or move new partitions to maintain a subset of data in Redshift.
+                    </section>
+                    <section>
+                        <h3>Reporting</h3>
+                        Our reporting platform has moved in large part to Tableau.  Tableau can live query our Presto and Redshift clusters, but our preferred method of data movement is publishing TDEs in UC4 or the portal.  We also support Microstrategy where desired.
+                    </section>
+                    <section>
+                        <h3>S3 Deletion Service/Janitors</h3>
+                        As part of maintaining S3 as our data warehouse, we provide tools to handle appropriate removal of data.  This includes things like our bucket janitor which deletes data older than 10 months, our table janitors which delete data according to retention policies, and other similar tools.  Additionally we provide a deletion service to handle problems such as large scale deletions of data from S3.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Kragle<br/>&nbsp;</span></h2>
+                    </section>
+                    <section>
+                        <a href="http://go/kragle">Kragle</a> exists to combine our services together in a cohesive whole from the perspective of the users.  Whether it be the data platform team or someone downstream, it should be easy to use the platform.  We build in Python because it gives us a flexible language that can fit into a scientific stack where needed.
+                    </section>
+                    <section>
+                        Running a presto query in kragle.
+                        <pre><code data-trim>
+                        >>> import kragle as kg
+                        >>> rj = kg.genie.PrestoJob() \
+                        ...     .script('select * from dse.ttl_title_d') \
+                        ...     .headers() \
+                        ...     .execute()
+                        </code></pre>
+                    </section>
+                    <section>
+                        Running a hive query in kragle.
+                        <pre><code data-trim>
+                        >>> import kragle as kg
+                        >>> rj = kg.genie.HiveJob() \
+                        ...     .script('select * from dse.ttl_title_d') \
+                        ...     .headers() \
+                        ...     .execute()
+                        </code></pre>
+                    </section>
+                    <section>
+                        Moving data from S3 data warehouse to Redshift.
+                        <pre><code data-trim>
+                        >>> import kragle as kg
+                        >>> kg.transport.Transporter() \
+                        ...     .source('metacat://prodhive/dse/ttl_title_d') \
+                        ...     .target('metacat://redshift-rs1/dse/ttl_title_d') \
+                        ...     .execute()
+                        </code></pre>
+                    </section>
+                    <section>
+                        Moving data from a query to Redshift <br/>(creating a new table if needed).
+                        <pre><code data-trim>
+                        >>> import kragle as kg
+                        >>> kg.transport.Transporter() \
+                        ...     .source(kg.genie.PrestoJob().script('select show_id, title_id from dse.ttl_title_d')) \
+                        ...     .target('metacat://redshift-rs1/dse/new_table') \
+                        ...     .create_missing(True) \
+                        ...     .execute()
+                        </code></pre>
+                    </section>
+                    <section>
+                        Run a UC4 Job.
+                        <pre><code data-trim>
+                        >>> import kragle as kg
+                        >>> kg.scheduler.Job('DSE.DPA.CHARLOTTE.ACTIVITY_REPORT').run_task()
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Big Data<br/>Portal</span></h2>
+                    </section>
+                    <section>
+                        The <a href="http://go/bigdataportal">Portal</a> aims to handle three things.
+                        <ol>
+                            <li>Jumping off point to the platform.</li>
+                            <li>Handle the 80% case internally</li>
+                            <li>Drive the platform to integrate</li>
+                        </ol>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#start"><img src="images/portal_query.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#doctor"><img src="images/portal_datadoctor.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#notebooks/personal"><img src="images/portal_notebooks.png" class="plain" style="width:80%"></a>
+                    </section>
+                    <section>
+                        <a href="https://bigdataportal.dynprod.netflix.net:7002/#reports/grid/AVJnb4qixXD77Lt9PGSX"><img src="images/portal_reportal.png" class="plain" style="width:80%"></a>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="../../lib/js/head.min.js"></script>
+        <script src="../../js/reveal.js"></script>
+
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+                width: '100%',
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: '../../plugin/markdown/marked.js' },
+                    { src: '../../plugin/markdown/markdown.js' },
+                    { src: '../../plugin/notes/notes.js', async: true },
+                    { src: '../../plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
+</html>

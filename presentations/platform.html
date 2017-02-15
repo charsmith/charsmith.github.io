@@ -1,0 +1,374 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Netflix's Data Platform</title>
+
+        <link href="://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+            .tree{
+                margin-top: 20px;
+                ul{
+                    list-style: none !important;
+                    list-style-type: none !important;
+                    padding-left: 5px;
+                    li {
+                        padding-left: 16px;
+                        position: relative;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        &:before{
+                            content: '';
+                            height: 1px;
+                            width: 10px;
+                            background-color: #FFF;
+                            position: absolute;
+                            top: 10px;
+                            left: 0;
+                            margin: auto;
+                        }
+                        &:after{
+                            content:'';
+                            width: 1px;
+                            height: 100%;
+                            background-color: #FFF;
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                        }
+                        &:last-child{
+                            &:after{
+                                height: 10px;
+                            }
+                        }
+                    }
+                    a{
+                        cursor: pointer;
+                        &:hover{
+                            color:#333;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+            .tree  ul {
+                list-style-type: none !important;
+            }
+            .red {
+                color:#E50914
+            }
+            #logo {
+                position:absolute;
+                bottom:0px;
+                width: 100px;
+            }
+            .sidebar {
+                border-left:3px solid #E50914 !important;
+                padding-left: 20px !important;
+                font-weight: 100 !important;
+                display: block !important;
+            }
+            .right-sidebar {
+                border-right:3px solid #E50914 !important;
+                padding-right: 20px !important;
+                font-weight: 100 !important;
+                display: block !important;
+                position: absolute;
+                right: 0%;
+                top: -200px;
+
+            }
+            .align-left {
+                text-align: left;
+            }
+            .float-right {
+                float: right;
+            }
+            .float-left {
+                float: left;
+            }
+            #containers {
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="images/netflix.png" id='logo'>
+        <div class="reveal">
+            <div class="slides">
+                <section style="border-left:1px solid #E50914;">
+                    <section class="align-left">
+                        <h2 class="float-left"><span class="sidebar">Netflix's<br/>Data Platform</span>
+                        </h2>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Core<br/>Concepts</span></h2>
+                    </section>
+                    <section>
+                        <div class="split"><span>
+                        Prefer self-service.  Pave a path and point to it.  Don't be a gatekeeper.  <a href="http://99percentinvisible.org/article/least-resistance-desire-paths-can-lead-better-design/">Pave</a> <a href="https://en.wikipedia.org/wiki/Desire_path">desire paths</a>.
+                        </span>
+                        <span>
+                            <img src="images/desirelines.jpg">
+                        </span>
+                    </section>
+                    <section>
+                        Provide a framework for building services, dev tooling, and ETL.
+                    </section>
+                    <section>
+                        Support R.
+                    </section>
+                    <section>
+                        Allow migration of environments.
+                    </section>
+                    <section>
+                        Continuous Deployment.
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <img src='images/docker.png' class='plain'>
+                    </section>
+                    <section>
+                        Our base project is called <a href="https://stash.corp.netflix.com/projects/DRYDOCK"><i class="fa fa-code-fork"></i> Drydock</a>
+                    </section>
+                    <section>
+                        <h3>Scicomp2</h3>
+                        The replacement for <b class='red'>personal</b> gateways.<br/> A container per instance.
+                    </section>
+                    <section>
+                        <h3>Pylon</h3>
+                        The replacement for <b class='red'>query</b> gateway.<br/> Multiple containers per instance.
+                    </section>
+                    <section>
+                        <h3>Notebooks</h3>
+                        <img src="images/notebooks.png" class='plain'>
+                    </section>
+                    <section>
+                        <h3>Automic</h3>
+                        Or as we affectionately call it <b class='red'>UC4</b>.<br/> Currently custom, moving towards <a href="http://go/titus">Titus</a>.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Features<br/>&nbsp;</span></h2>
+                    </section>
+                    <section>
+                        <h3>Increased Security</h3>
+                    </section>
+                    <section>
+                        <h3>Better identity</h3>
+                        <img src="images/stash.png" class="plain">
+                    </section>
+                    <section>
+                        <h3>Up to date</h3>
+                        <pre class="bash"><code>> reboot</code></pre>
+                    </section>
+                    <section>
+                        <h3>Runs with dataeng role</h3>
+                        <pre class="bash" style="width:50%"><code  data-trim>
+                        > aws s3 ls
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h3>Big data tools</h3>
+                        <pre class="bash" style="width:50%"><code  data-trim>
+                        > presto
+                        > prodhive
+                        > prodpig
+                        > spark-shell
+                        > spark-submit
+                        > spark-sql
+                        </code></pre>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Library support
+
+                            * Up to date kragle
+                            * A lot of python libraries
+                            * R libraries
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Notebook support
+
+                            * Jupyter
+                            * RStudio
+                            * Zeppelin
+                        </script>
+                    </section>
+                    <section>
+                        <h3>Persistent shared storage</h3>
+
+                        Across all environments
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2 class="align-left"><span class="sidebar">Storage<br/>&nbsp;</span></h2>
+                    </section>
+                    <section>
+                        <span><div>Make access to files universal and easy.</div>
+                        <div style='font-size:50%'>This is subject to change (especially the locations in s3)</div></span>
+                    </section>
+                    <section>
+                        <h4>Folders to know</h4>
+
+
+                        <div style="width:50%;margin-left:23%">
+                            <div class="tree" style="background-color:#3F3F3F">
+                                <ul>
+                                    <!--root-->
+                                    <li><i class="fa fa-folder-open-o"></i><a class="node"> /</a>
+                                        <ul>
+                                            <li><i class="fa fa-folder-open-o"></i><a class="node"> efs</a>
+                                                <ul>
+                                                    <li><i class="fa fa-folder-open-o"></i><a class="node"> users</a> - all other users homes (ro)
+                                                        <ul>
+                                                            <li><i class="fa fa-folder-o"></i><a class="node"> $user</a> - (rw)</li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><i class="fa fa-folder-o"></i><a class="node"> efs.readonly</a> - (ro) </li>
+                                            <li><i class="fa fa-folder-o"></i><a class="node"> mnt</a> - ephemeral, not shared</li>
+                                            <li><i class="fa fa-folder-o"></i><a class="node"> root</a> - your home</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Files are backed up to S3.  This is not instantanious - so don't build processes expecting that - but you files will be available at:
+
+                            [s3://netflix-dataplatform-efs-backups/prod/scicomp/users/](https://bigdataportal.dynprod.netflix.net:7002/#s3/s3://netflix-dataplatform-efs-backups/prod/scicomp/users/)
+
+                        </script>
+                    </section>
+                    <section>
+                        <h3>Locally mounted</h3>
+                        <pre class="bash"><code  data-trim>
+                        > mkdir -p ~/efs && sshfs -o reconnect pylon:/ ~/efs
+                        </code></pre>
+                        <div style='font-size:50%'>These instructions will change.  Requires <a href = "https://osxfuse.github.io/">osxfuse</a></div>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Quirks<br/>&nbsp;</span></h2>
+                    </section>
+                    <section>
+                        Runs in the <b class="red">awsprod</b> account.
+                    </section>
+                    <section>
+                        Notebooks and UC4 will run on <a href="http://go/titus">Titus</a>.
+                    </section>
+                    <section>
+                        You will run as <b class="red">root</b>.
+                    </section>
+                    <section>
+                        Your actual id will be stored in the env variable - <b class="red">BD_USER</b>.
+                    </section>
+                    <section>
+                        You can change the image, but it <b>won't</b> persist.
+                    </section>
+                    <section>
+                        The image is large, currently 5GB+
+                    </section>
+                    <section>
+                        Access to stash/github is currently password based.
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">What should<br/> I use?</span></h2>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            |                     | Notebooks | Pylon | Scicomp2 |
+                            | ------------------- | :-------: | :---: | :------: |
+                            | Low Usage           | Yes       | Yes   |          |
+                            | SSH Access          |           | Yes   | Yes      |
+                            | Terminal            | [web-based](https://themis.dynprod.netflix.net:7002/charsmith/ipynb/terminals/1) | Yes   | Yes      |
+                            | Customizable Memory | Yes       |       | Yes      |
+                            | Customizable CPUs   | Yes       |       | Yes      |
+                            | Recurring Jobs      |           |       |          |
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <section class="align-left">
+                        <h2><span class="sidebar">Availability<br/>&nbsp;</span></h2>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            * Scicomp2 - In [beta](http://go/scicomp2)
+                            * Pylon - February 2017
+                            * Notebooks - with EFS Q1 2017
+                            * UC4
+                                * Titus - In beta
+                                * Titus - with full EFS Q1 2017
+                        </script>
+                    </section>
+                    <section>
+                        If you are really wanting to try scicomp2 out, it is super <a href="https://spinnaker.prod.netflix.net/#/applications/scicomp2/executions?stage=0&step=0&details=findImageConfig&pipeline=DEPLOY">simple</a>
+                        <img src="images/spinnaker.png" class="plain" style="width:50%">
+                    </section>
+                    <section>
+                        Please join the relevant google groups <a href="https://groups.google.com/a/netflix.com/forum/#!forum/scicomp2-beta">scicomp2-beta</a> and
+                        <a href="https://groups.google.com/a/netflix.com/forum/#!forum/notebook-users">notebook-users</a>
+                    </section>
+                </section>
+                <section class="align-left">
+                    <h2><span class="sidebar">Questions?<br/>&nbsp;</span></h2>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+                width: '100%',
+                previewLinks: true,
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
+</html>
